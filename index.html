@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Autour+One&display=swap" rel="stylesheet">
+        <link href="https://api.fontshare.com/v2/css?f[]=general-sans@400&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="./style.css">
+        <title>Rock, Paper, Scissors</title>
+    </head>
+    <body>
+        <header class="container">
+            <h1 class="header__title">Rock, Paper, Scissors</h1>
+            <button id="original">Node JS version</button>
+        </header>
+
+        <main class="container">           
+            <div class="main__game">
+                <div id="restart__banner">
+                    <h3>Would you like to start a new game?</h3>
+                    <div class="restart__options">
+                        <button class="btn__restart" id="restart__yes">Yes</button>
+                        <button class="btn__restart" id="restart__no">No</button>
+                    </div>
+                </div>
+
+                <section class="player__side">                
+                    <p class="player__score">[<span class="player__points">0</span>]</p>                        
+                    <div class="hands">
+                        <h2 class="player__title">Player, choose your hand!</h2>
+                        <div class="hand">
+                            <button aria-label="Rock" class="btn__hand" id="rock">✊🏼</button>     
+                            <p class="player__handLabel">Rock</p>   
+                        </div>
+                        
+                        <div class="hand">
+                            <button aria-label="Paper" class="btn__hand" id="paper">🖐🏼</button>   
+                            <p class="player__handLabel">Paper</p>
+                        </div>
+
+                        <div class="hand">
+                            <button aria-label="Scissors" class="btn__hand" id="scissors">✌🏼</button> 
+                            <p class="player__handLabel">Scissors</p>   
+                        </div> 
+                    </div>                 
+                </section>  
+
+                <section class="start__timer">
+                    <button id="btn__play">Let's Play!</button>
+                    <span id="timer">0</span>
+                    <h3 id="event__banner">Player scores!</h3>                    
+                    <hr class="vertical__line" />                    
+                </section>
+                
+                <section class="computer__side">                    
+                    <p class="computer__score">[<span class="computer__points">0</span>]</p>                       
+                    <div class="computer__display">
+                        <h2 class="computer__title">Computer</h2>
+                        <div class="computer__handbg">
+                            <p id="computer__hand">✊🏼</p>  
+                        </div>  
+                        <p class="computer__handLabel"></p>                              
+                    </div> 
+                </section>
+            </div>
+        </main>
+
+        <footer class="container">
+            <section class="log__rules">               
+                <section class="rules__game">
+                    <h3 class="h3__title">Rules of the Game</h3>
+                    <ol class="rules"> 
+                        <li><p>Press <span>Let's Play!</span> button to start a new game.</p></li>
+                        <li><p>Player has 5 seconds to choose a hand or Computer wins the round.</p></li>                   
+                        <li><p>Paper beats rock. Rock beats scissors. Scissors beat paper.</p></li> 
+                        <li><p>First to 5 points WINS!</p></li>                   
+                    </ol>
+                </section>
+
+                <section class="play__log">
+                    <h3 class="h3__title">Game Log</h3>
+                    <ol id="log__display">
+                        <!-- Entries will go here -->
+                        <li class="example__only"><p>The game progress will be logged here.</p></li>                                            
+                        <li class="example__only"><p>This will also reset when a new game is played.</p></li>    
+                    </ol>
+                </section>
+            </section>
+            <section class="credits">
+                <p class="odin">The Odin Project</p>
+            </section>
+        </footer>        
+        <script src="/animation.js" defer></script>
+        <script src="/main.js" defer></script>
+        <script src="/original.js" defer></script>
+    </body>
+</html>
