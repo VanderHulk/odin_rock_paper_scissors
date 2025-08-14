@@ -26,6 +26,8 @@ timerDisplay.innerText = 5;
 togglePlayerHands(true); // (isDisabled = true)
 
 original.addEventListener('click', () => {
+    playerScore = 0;
+    computerScore = 0;
     playNodeVersion();
 });
 
@@ -43,7 +45,6 @@ startGame.addEventListener('click', function() {
         clearInterval(toggleInterval);
         isPaused = true;
         pauseCover.style.display = 'flex';
-        console.log(isPaused);
     }
 });
 
@@ -203,7 +204,6 @@ function checkWinner() {
             startTimer(timerDisplay.innerText);
         }, 2000);
     }
-    console.log('checkWinner()' + isPaused);
 }
 
 function getComputerHand() {

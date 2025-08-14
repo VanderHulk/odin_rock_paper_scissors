@@ -4,9 +4,9 @@ let computerScore = 0;
 
 function playNodeVersion() {
 
-    let choice;
-    let playerHand;
-    let computerHand;
+    let choice='';
+    let playerHand='';
+    let computerHand='';
 
     do {         
         if (playerScore === 3 || computerScore === 3) {
@@ -18,6 +18,7 @@ function playNodeVersion() {
         } 
 
         do {
+            
             choice = prompt("Let's play ROCK, PAPER, SCISSORS!\nFirst to 3 points WINS!\n[1] ROCK\n[2] PAPER\n[3] SCISSORS\n\nPlayer: " + playerScore + '  |  Computer: ' + computerScore);
 
             playerHand = hands[choice - 1];
@@ -66,8 +67,6 @@ function nodeStartGame(playerHand, computerHand) {
         }
     }
 
-
-    console.log(message);
     alert(message + '\n' + playerHand + '  vs  ' + computerHand + '\nPlayer: '+ playerScore + '  |  Computer: ' + computerScore);
 }
 
