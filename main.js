@@ -1,12 +1,21 @@
 const original = document.getElementById('original');
 
-const startGame = document.getElementById('btn__play'); //starting the game
+original.addEventListener('click', () => {
+    playerScore = 0;
+    computerScore = 0;
+    playNodeVersion();
+});
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+const btnPlayPause = document.getElementById('btn__play'); //starting the game
 const timerDisplay = document.getElementById('timer'); //displaying the time
 const eventShow = document.getElementById('event__banner');
-const pauseCover = document.getElementById('restart__banner');
+const pauseCover = document.getElementById('pause__curtain');
 const restartYes = document.getElementById('restart__yes');
 const restartNo = document.getElementById('restart__no');
 
+const btnHands = document.querySelectorAll('.btn__hand');
 const handsContainerAll = document.querySelectorAll('.hands .btn__hand');
 const handsContainerButtons = document.querySelector('.hands'); // checking when player chose a hand
 const playerPoints = document.querySelector('.player__points');
@@ -16,47 +25,35 @@ const computerHandLabel = document.querySelector('.computer__handLabel');
 const computerPoints = document.querySelector('.computer__points');
 
 const historyLog = document.getElementById('log__display');
+const defaultHistoryLog = historyLog.innerHTML;
 
 let toggleInterval;
-let selectedHand = "";
-let isPaused = true;
+let selectedHand;
 
-timerDisplay.innerText = 5;
+initialState(0);
 
-togglePlayerHands(true); // (isDisabled = true)
-
-original.addEventListener('click', () => {
-    playerScore = 0;
-    computerScore = 0;
-    playNodeVersion();
-});
-
-startGame.addEventListener('click', function() {
+btnPlayPause.addEventListener('click', function() {
     if (btn__play.innerText !== 'Pause') {
-        setTimeout(() => {
-            btn__play.innerText = 'Pause';
-            historyLog.innerHTML = '';
-        }, 500);     
-        setTimeout(() => {
-            isPaused = false;
-            startTimer(timerDisplay.innerText);
-        }, 1000);   
+        startGameState();
+        historyLog.innerHTML = "";
     } else {
-        clearInterval(toggleInterval);
-        isPaused = true;
-        pauseCover.style.display = 'flex';
+        pauseGameState();
     }
 });
 
 restartYes.addEventListener('click', () => {
-    pauseCover.style.display = 'none';
-    resetAll();
+    initialState(0);
 });
 
 restartNo.addEventListener('click', () => {
-    isPaused = false;
-    startTimer(timerDisplay.innerText);
-    pauseCover.style.display = 'none';
+    startGameState();
+});
+
+btnHands.forEach(btn => {
+    btn.addEventListener('click', () => {
+        btnHands.forEach(b => b.classList.remove('wiggling'));
+        btn.classList.add('wiggling');        
+    });
 });
 
 handsContainerButtons.addEventListener('click', function(event) {
@@ -65,17 +62,17 @@ handsContainerButtons.addEventListener('click', function(event) {
     if (btn__play.innerText === 'Pause') {
         if (timerDisplay.innerText > 0) {     
             if(target.classList.contains('btn__hand')) {
-                selectedHand = target.id;
+                selectedHand = target.id;                
                 checkScore();
             }
         }
     }
 });
 
-function startTimer(startSeconds) {
-
+function startTimer(isPaused, startSeconds) {
+    
     if (!isPaused) {
-        togglePlayerHands(false); // (isDisabled = false)
+        disablePlayerHands(false); // (isDisabled = false)
 
         toggleInterval = setInterval(() => {
             startSeconds--;
@@ -88,38 +85,7 @@ function startTimer(startSeconds) {
     }
 }
 
-function resetAll() {
-
-    isPaused = true;
-    clearInterval(toggleInterval);
-    timerDisplay.innerText = 5;
-    playerPoints.innerText = 0;
-    computerPoints.innerText = 0;
-    btn__play.innerText = "Let's Play!";    
-    eventShow.innerText = '';
-    historyLog.innerHTML = '';
-    togglePlayerHands(true);    
-    resetStyles();
-}
-
-function resetStyles() {
-
-    handsContainerAll.forEach(button => {
-        button.style.borderColor = 'transparent';
-        button.classList.remove('wiggling');
-    });
-
-    computerHand.classList.remove('wiggling');
-    computerHand.innerText = '✊🏼';
-    computerHandLabel.innerText = '';
-    selectedHand = "";
-
-    setTimeout(() => {
-        startGame.disabled = false;
-    }, 2000);
-}
-
-function togglePlayerHands(isDisabled) {
+function disablePlayerHands(isDisabled) {
 
     handsContainerAll.forEach(button => {
         button.disabled = isDisabled;
@@ -137,13 +103,16 @@ function checkScore() {
     getComputerHand();
 
     if (Number(playerPoints.innerText) < 5 && Number(computerPoints.innerText) < 5) {
-        if(selectedHand) {
-            isPaused = true;
+        everyRoundState();
+
+        if(selectedHand) { 
 
             if (selectedHand.toLowerCase() === computerHandLabel.innerText.toLowerCase()) {
                 showBanner('Draw!');
+
             } else {
                 if (winsAgainst[selectedHand.toUpperCase()] === computerHandLabel.innerText.toUpperCase()) {
+
                     playerPoints.innerText = (Number(playerPoints.innerText) + 1).toString();
 
                     if (Number(playerPoints.innerText) < 5) {
@@ -151,6 +120,7 @@ function checkScore() {
                         showBanner('Player scores!');
                     }
                 } else {
+
                     computerPoints.innerText = (Number(computerPoints.innerText) + 1).toString();
 
                     if (Number(computerPoints.innerText) < 5) {
@@ -171,21 +141,19 @@ function checkScore() {
         }
     }
 
-    clearInterval(toggleInterval);
+    // clearInterval(toggleInterval);
 
-    setTimeout (() => {
-        resetStyles();
-        timerDisplay.innerText = 5;
-    }, 1000);
-
+    // setTimeout (() => {
+    //     resetStyles();
+    //     timerDisplay.innerText = 5;
+    // }, 1000);    
     checkWinner();
     recordHistory();
 }
 
 function checkWinner() {
 
-    startGame.disabled = true;
-    clearInterval(toggleInterval);
+    roundIsOverState();
 
     if (Number(playerPoints.innerText) === 5 || Number(computerPoints.innerText) === 5) {
         if (Number(playerPoints.innerText) === 5) {
@@ -193,17 +161,9 @@ function checkWinner() {
         } else {
             showBanner('Computer WINS!');
         }
-
-        setTimeout(() => {           
-            resetAll();
-        }, 3000);  
-
-    } else {
-        setTimeout(() => {
-            isPaused = false;
-            startTimer(timerDisplay.innerText);
-        }, 2000);
-    }
+        
+        initialState(2000);
+    } 
 }
 
 function getComputerHand() {
@@ -228,8 +188,8 @@ function showBanner(message) {
     eventShow.style.display = 'flex';
 
     setTimeout(() => {        
-        startGame.disabled = true;
-        togglePlayerHands(true); // (isDisabled = true)       
+        // btnPlayPause.disabled = true;
+        // disablePlayerHands(true); // (isDisabled = true)       
         eventShow.classList.add('show');
     }, 10);
 

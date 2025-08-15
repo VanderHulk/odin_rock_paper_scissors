@@ -109,7 +109,7 @@ header {
     margin-bottom: 1em;
 }
 
-#restart__banner {
+#pause__curtain {
     position: absolute;
     display: flex;
     flex-direction: column;
@@ -123,7 +123,7 @@ header {
     z-index: 3;
 }
 
-#restart__banner h3 {
+#pause__curtain h3 {
     text-align: center;
     padding: 1em;
 }
@@ -350,7 +350,7 @@ button {
 }
 
 /* -------------------- ANIMATION -------------------- */
-#restart__banner {
+#pause__curtain {
     display: none;
 }
 
@@ -634,5 +634,19 @@ button {
     .play__log {        
         margin-top: 0;
         padding-left: 1em;        
+    }
+}
+
+@media (pointer: coarse) {
+    #original:hover,
+    #btn__play:hover,
+    .btn__hand:hover,
+    .btn__restart:hover,
+    #original:active,
+    #btn__play:active,
+    .btn__restart:active {
+        transition: none;
+        transform: none;
+        box-shadow: none;
     }
 }
